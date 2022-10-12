@@ -1,8 +1,11 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 module.exports = {
-  mode: 'development',
   entry: {
-    carousel: './src/carousel.js',
+    carousel: './src/Carousel.js',
+    example: './example/index.js',
   },
+  mode: 'development',
   module: {
     rules: [
       {
@@ -11,4 +14,10 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Carousel Example',
+      chunks: ['example'],
+    }),
+  ],
 };
