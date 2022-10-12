@@ -1,6 +1,7 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
 import CarouselSlide, { StyledImage } from '../CarouselSlide';
+import styled from 'styled-components';
 
 describe('CarouselSlide', () => {
   let wrapper;
@@ -46,6 +47,14 @@ describe('CarouselSlide', () => {
     expect(wrapper.prop('onClick')).toBe(onClick);
     expect(wrapper.prop('className')).toBe(className);
   });
+
+  it('renders correctly', () => {
+    wrapper.setProps({
+      attribution: 'Gonzo',
+      description: 'A cool image',
+    });
+    expect(wrapper).toMatchSnapshot();
+  });
 });
 
 describe('StyledImage', () => {
@@ -60,14 +69,29 @@ describe('StyledImage', () => {
     expect(mounted.containsMatchingElement(<img src={imgUrl} />)).toBe(true);
   });
 
-  it('has the expected static styles', () => {
-    expect(mounted).toHaveStyleRule('width', '100%');
-    expect(mounted).toHaveStyleRule('object-fit', 'cover');
-  });
-
   it('uses imgHeight as the height style property', () => {
     expect(mounted).toHaveStyleRule('height', '500px');
     mounted.setProps({ imgHeight: 'calc(100vh - 100px)' });
     expect(mounted).toHaveStyleRule('height', 'calc(100vh - 100px)');
+  });
+
+  it('allows styles to be overridden', () => {
+    const TestImg = styled(CarouselSlide.defaultProps.StyledImage)`
+      width: auto;
+      height: auto;
+      object-fit: fill;
+    `;
+
+    mounted = mount(
+      <CarouselSlide StyledImage={TestImg} imgUrl={imgUrl} description="Test" />
+    );
+
+    expect(mounted.find(TestImg)).toHaveStyleRule('width', 'auto');
+    expect(mounted.find(TestImg)).toHaveStyleRule('height', 'auto');
+    expect(mounted.find(TestImg)).toHaveStyleRule('object-fit', 'fill');
+  });
+
+  it('renders correctly', () => {
+    expect(mounted.find('img')).toMatchSnapshot();
   });
 });

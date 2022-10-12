@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import CarouselButton from './CarouselButton';
 import CarouselSlide from './CarouselSlide';
 
-const Carousel = ({ slides, ...rest }) => {
+const Carousel = ({ defaultImage, defaultImageHeight, slides, ...rest }) => {
   const [slideIndex, setSlideIndex] = useState(1);
   const slidesLength = slides.length;
-  const defaultImgHeight = CarouselSlide.defaultProps.imgHeight;
 
   const handleSlideChange = (action) => {
     if (action === 'prev') {
@@ -20,7 +19,11 @@ const Carousel = ({ slides, ...rest }) => {
 
   return (
     <div {...rest}>
-      <CarouselSlide imgHeight={defaultImgHeight} {...slides[slideIndex]} />
+      <CarouselSlide
+        StyledImage={defaultImage}
+        imgHeight={defaultImageHeight}
+        {...slides[slideIndex]}
+      />
       <CarouselButton
         data-action="prev"
         onClick={() => handleSlideChange('prev')}
@@ -39,8 +42,15 @@ const Carousel = ({ slides, ...rest }) => {
 };
 
 Carousel.propTypes = {
+  defaultImage: PropTypes.elementType,
+  defaultImgHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   slides: PropTypes.arrayOf(PropTypes.shape(CarouselSlide.propTypes))
     .isRequired,
+};
+
+Carousel.defaultProps = {
+  defaultImage: CarouselSlide.defaultProps.StyledImage,
+  defaultImgHeight: CarouselSlide.defaultProps.imgHeight,
 };
 
 export default Carousel;

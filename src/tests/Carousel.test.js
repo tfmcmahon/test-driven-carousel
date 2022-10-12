@@ -53,23 +53,28 @@ describe('Carousel', () => {
 
   it('decrements `slideIndex` when Prev is clicked', () => {
     wrapper.find('[data-action="prev"]').simulate('click');
+
     expect(wrapper.find('p').text()).toBe('0');
   });
 
   it('increments `slideIndex` when Next is clicked', () => {
     wrapper.find('[data-action="next"]').simulate('click');
+
     expect(wrapper.find('p').text()).toBe('2');
   });
 
   it('renders the current slide as a CarouselSlide', () => {
     let slideProps;
     slideProps = wrapper.find(CarouselSlide).props();
+
     expect(slideProps).toEqual({
       ...CarouselSlide.defaultProps,
       ...slides[1],
     });
+
     wrapper.find('[data-action="next"]').simulate('click');
     slideProps = wrapper.find(CarouselSlide).props();
+
     expect(slideProps).toEqual({
       ...CarouselSlide.defaultProps,
       ...slides[2],
@@ -79,6 +84,7 @@ describe('Carousel', () => {
   it('wraps around when the last slide is reached', () => {
     const nextButton = wrapper.find('[data-action="next"]');
     slides.forEach(() => nextButton.simulate('click'));
+
     expect(wrapper.find('p').text()).toBe('1');
   });
 
@@ -86,6 +92,34 @@ describe('Carousel', () => {
     const prevButton = wrapper.find('[data-action="prev"]');
     prevButton.simulate('click');
     prevButton.simulate('click');
+
     expect(wrapper.find('p').text()).toBe(`${slides.length - 1}`);
+  });
+
+  it('passes defaultImg and defaultHeight to the CarouselSlide', () => {
+    const defaultImage = () => 'Test';
+    const defaultImageHeight = 1234;
+    wrapper.setProps({ defaultImage, defaultImageHeight });
+
+    expect(wrapper.find(CarouselSlide).prop('StyledImage')).toBe(defaultImage);
+    expect(wrapper.find(CarouselSlide).prop('imgHeight')).toBe(
+      defaultImageHeight
+    );
+  });
+
+  it('allows individual slides to override StyledImage and imgHeight', () => {
+    const StyledImage = () => 'Test';
+    const imgHeight = 1234;
+    const mappedSlides = slides.map((slide) => ({
+      ...slide,
+      StyledImage,
+      imgHeight,
+    }));
+    wrapper.setProps({ slides: mappedSlides });
+
+    expect(wrapper.find(CarouselSlide).prop('StyledImage')).toEqual(
+      StyledImage
+    );
+    expect(wrapper.find(CarouselSlide).prop('imgHeight')).toBe(imgHeight);
   });
 });
