@@ -1,21 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+
 import CarouselButton from './CarouselButton';
 import CarouselSlide from './CarouselSlide';
+import HasIndex from './HasIndex';
 
-const Carousel = ({ defaultImage, defaultImageHeight, slides, ...rest }) => {
-  const [slideIndex, setSlideIndex] = useState(1);
+export const Carousel = ({
+  defaultImage,
+  defaultImageHeight,
+  slides,
+  slideIndex,
+  slideIndexDecrement,
+  slideIndexIncrement,
+  ...rest
+}) => {
   const slidesLength = slides.length;
-
-  const handleSlideChange = (action) => {
-    if (action === 'prev') {
-      setSlideIndex(
-        (prevIndex) => (prevIndex + slidesLength - 1) % slidesLength
-      );
-    } else if (action === 'next') {
-      setSlideIndex((prevIndex) => (prevIndex + 1) % slidesLength);
-    }
-  };
 
   return (
     <div {...rest}>
@@ -26,17 +25,16 @@ const Carousel = ({ defaultImage, defaultImageHeight, slides, ...rest }) => {
       />
       <CarouselButton
         data-action="prev"
-        onClick={() => handleSlideChange('prev')}
+        onClick={() => slideIndexDecrement(slidesLength)}
       >
         Prev
       </CarouselButton>
       <CarouselButton
         data-action="next"
-        onClick={() => handleSlideChange('next')}
+        onClick={() => slideIndexIncrement(slidesLength)}
       >
         Next
       </CarouselButton>
-      <p>{slideIndex}</p>
     </div>
   );
 };
@@ -46,6 +44,9 @@ Carousel.propTypes = {
   defaultImgHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   slides: PropTypes.arrayOf(PropTypes.shape(CarouselSlide.propTypes))
     .isRequired,
+  slideIndex: PropTypes.number.isRequired,
+  slideIndexDecrement: PropTypes.func.isRequired,
+  slideIndexIncrement: PropTypes.func.isRequired,
 };
 
 Carousel.defaultProps = {
@@ -53,4 +54,4 @@ Carousel.defaultProps = {
   defaultImgHeight: CarouselSlide.defaultProps.imgHeight,
 };
 
-export default Carousel;
+export default HasIndex(Carousel, 'slideIndex');
