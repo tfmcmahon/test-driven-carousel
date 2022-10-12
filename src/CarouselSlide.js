@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const StyledImage = styled.img`
+export const StyledImage = styled.img`
   object-fit: cover;
   width: 100%;
   height: ${({ imgHeight }) =>

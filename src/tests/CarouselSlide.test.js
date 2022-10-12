@@ -1,6 +1,6 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import CarouselSlide from '../CarouselSlide';
+import { mount, shallow } from 'enzyme';
+import CarouselSlide, { StyledImage } from '../CarouselSlide';
 
 describe('CarouselSlide', () => {
   let wrapper;
@@ -16,13 +16,13 @@ describe('CarouselSlide', () => {
     expect(wrapper.type()).toBe('figure');
   });
 
-  it('renders an img and a figcaption as children', () => {
-    expect(wrapper.childAt(0).type()).toBe('img');
+  it('renders props.StyledImage and a <figcaption> as children', () => {
+    expect(wrapper.childAt(0).type()).toEqual(StyledImage);
     expect(wrapper.childAt(1).type()).toBe('figcaption');
   });
 
   it('passes `imgUrl through to the <img>', () => {
-    const img = wrapper.find('img');
+    const img = wrapper.find(StyledImage);
     expect(img.prop('src')).toBe(imgUrl);
   });
 
@@ -45,5 +45,18 @@ describe('CarouselSlide', () => {
     expect(wrapper.prop('style')).toBe(style);
     expect(wrapper.prop('onClick')).toBe(onClick);
     expect(wrapper.prop('className')).toBe(className);
+  });
+});
+
+describe('StyledImage', () => {
+  let mounted;
+  const imgUrl = 'https://example.com/default.jpg';
+
+  beforeEach(() => {
+    mounted = mount(<StyledImage src={imgUrl} imgHeight={500} />);
+  });
+
+  it('renders an <img> with a given source', () => {
+    expect(mounted.containsMatchingElement(<img src={imgUrl} />)).toBe(true);
   });
 });

@@ -61,13 +61,19 @@ describe('Carousel', () => {
     expect(wrapper.find('p').text()).toBe('2');
   });
 
-  it('renders the current slide', () => {
+  it('renders the current slide as a CarouselSlide', () => {
     let slideProps;
     slideProps = wrapper.find(CarouselSlide).props();
-    expect(slideProps).toEqual(slides[1]);
+    expect(slideProps).toEqual({
+      ...CarouselSlide.defaultProps,
+      ...slides[1],
+    });
     wrapper.find('[data-action="next"]').simulate('click');
     slideProps = wrapper.find(CarouselSlide).props();
-    expect(slideProps).toEqual(slides[2]);
+    expect(slideProps).toEqual({
+      ...CarouselSlide.defaultProps,
+      ...slides[2],
+    });
   });
 
   it('wraps around when the last slide is reached', () => {
