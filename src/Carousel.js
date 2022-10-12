@@ -6,6 +6,7 @@ import CarouselSlide from './CarouselSlide';
 const Carousel = ({ slides, ...rest }) => {
   const [slideIndex, setSlideIndex] = useState(1);
   const slidesLength = slides.length;
+  const defaultImgHeight = CarouselSlide.defaultProps.imgHeight;
 
   const handleSlideChange = (action) => {
     if (action === 'prev') {
@@ -19,7 +20,7 @@ const Carousel = ({ slides, ...rest }) => {
 
   return (
     <div {...rest}>
-      <CarouselSlide {...slides[slideIndex]} />
+      <CarouselSlide imgHeight={defaultImgHeight} {...slides[slideIndex]} />
       <CarouselButton
         data-action="prev"
         onClick={() => handleSlideChange('prev')}
