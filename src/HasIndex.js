@@ -18,7 +18,8 @@ const HasIndex = (Component, indexPropName) => {
     const handleDecrement = (max) => {
       setIndex((prevIndex) => {
         const nextIndex = max ? (prevIndex + max - 1) % max : prevIndex - 1;
-        props.onIndexChange?.({ target: { value: nextIndex } });
+        props.onIndexChange &&
+          props.onIndexChange({ target: { value: nextIndex } });
         return nextIndex;
       });
     };
@@ -26,11 +27,13 @@ const HasIndex = (Component, indexPropName) => {
     const handleIncrement = (max) => {
       setIndex((prevIndex) => {
         const nextIndex = max ? (prevIndex + 1) % max : prevIndex + 1;
-        props.onIndexChange?.({ target: { value: nextIndex } });
+        props.onIndexChange &&
+          props.onIndexChange({ target: { value: nextIndex } });
         return nextIndex;
       });
     };
 
+    // eslint-disable-next-line no-unused-vars
     const { [defaultIndexPropName]: _, ...rest } = props;
 
     const indexProps = {

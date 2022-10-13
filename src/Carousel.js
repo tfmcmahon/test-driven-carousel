@@ -41,7 +41,7 @@ export const Carousel = ({
 
 Carousel.propTypes = {
   defaultImage: PropTypes.elementType,
-  defaultImgHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  defaultImageHeight: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   slides: PropTypes.arrayOf(PropTypes.shape(CarouselSlide.propTypes))
     .isRequired,
   slideIndex: PropTypes.number.isRequired,
@@ -51,7 +51,7 @@ Carousel.propTypes = {
 
 Carousel.defaultProps = {
   defaultImage: CarouselSlide.defaultProps.StyledImage,
-  defaultImgHeight: CarouselSlide.defaultProps.imgHeight,
+  defaultImageHeight: CarouselSlide.defaultProps.imgHeight,
 };
 
 export default HasIndex(Carousel, 'slideIndex');
